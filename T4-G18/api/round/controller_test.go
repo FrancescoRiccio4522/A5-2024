@@ -1,4 +1,4 @@
-package round
+/* package round
 
 import (
 	"bytes"
@@ -320,4 +320,11 @@ func (gr *MockedRepository) FindByGame(id int64) ([]Round, error) {
 	}
 	return v.([]Round), args.Error(1)
 
+}
+*/
+
+package round
+
+func main3() {
+	FunzioneVuota() // Chiamata della funzione
 }

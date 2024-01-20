@@ -15,8 +15,9 @@ type Game struct {
 	UpdatedAt    time.Time  `gorm:"autoUpdateTime"`
 	StartedAt    *time.Time `gorm:"default:null"`
 	ClosedAt     *time.Time `gorm:"default:null"`
-	Rounds       []Round    `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
-	Players      []Player   `gorm:"many2many:player_games;foreignKey:ID;joinForeignKey:GameID;References:AccountID;joinReferences:PlayerID"`
+	//Rounds       []Round    `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
+	Turns   []Turns  `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
+	Players []Player `gorm:"many2many:player_games;foreignKey:ID;joinForeignKey:GameID;References:AccountID;joinReferences:PlayerID"`
 }
 
 func (Game) TableName() string {
@@ -74,7 +75,8 @@ type Turn struct {
 	Scores    string     `gorm:"default:null"`
 	IsWinner  bool       `gorm:"default:false"`
 	PlayerID  int64      `gorm:"index:idx_playerturn,unique;not null"`
-	RoundID   int64      `gorm:"index:idx_playerturn,unique;not null"`
+	//RoundID   int64      `gorm:"index:idx_playerturn,unique;not null"`
+	GameID int64 `gorm:"not null"`
 }
 
 func (Turn) TableName() string {

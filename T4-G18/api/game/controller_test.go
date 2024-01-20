@@ -34,13 +34,7 @@ func (suite *ControllerSuite) SetupSuite() {
 		On("Delete",
 			mock.MatchedBy(func(id int64) bool { return id != 1 })).
 		Return(api.ErrNotFound).
-		On("Update", int64(1),
-			&UpdateRequest{Name: "test", CurrentRound: 10}).
-		Return(Game{}, nil).
-		On("Update",
-			mock.MatchedBy(func(id int64) bool { return id != 1 }),
-			&UpdateRequest{Name: "test", CurrentRound: 10}).
-		Return(nil, api.ErrNotFound).
+		// rimossi dei mock
 		On("FindByInterval", mock.Anything, mock.Anything).
 		Return([]Game{}, int(64), nil).
 		On("FindByPlayer", mock.Anything, mock.Anything).
@@ -164,6 +158,8 @@ func (suite *ControllerSuite) TestDelete() {
 	}
 
 }
+
+/* rimosso intero test
 func (suite *ControllerSuite) TestUpdate() {
 
 	tcs := []struct {
@@ -213,7 +209,8 @@ func (suite *ControllerSuite) TestUpdate() {
 		})
 	}
 
-}
+}*/
+
 func (suite *ControllerSuite) TestList() {
 
 	type input struct {

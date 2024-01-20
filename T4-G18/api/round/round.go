@@ -1,4 +1,4 @@
-package round
+/* package round
 
 import (
 	"strconv"
@@ -60,4 +60,11 @@ func fromModel(r *model.Round) Round {
 		ClosedAt:    r.ClosedAt,
 		GameID:      r.GameID,
 	}
+}
+*/
+
+package round
+
+func main2() {
+	FunzioneVuota() // Chiamata della funzione
 }

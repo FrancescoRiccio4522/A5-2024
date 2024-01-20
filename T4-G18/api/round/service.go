@@ -1,4 +1,4 @@
-package round
+/* package round
 
 import (
 	"errors"
@@ -116,4 +116,11 @@ func (rs *Repository) Delete(id int64) error {
 	})
 
 	return api.MakeServiceError(err)
+}
+*/
+
+package round
+
+func main1() {
+	FunzioneVuota() // Chiamata della funzione
 }

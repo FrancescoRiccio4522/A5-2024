@@ -37,12 +37,13 @@ func (tr *Repository) CreateBulk(r *CreateRequest) ([]Turn, error) {
 			err error
 		)
 
-		err = tx.Where(&model.Round{ID: r.RoundId}).
-			First(&model.Round{}).
-			Error
-		if err != nil {
-			return err
-		}
+		/* 		rimosso codice riguardante round
+		   		err = tx.Where(&model.Round{ID: r.RoundId}).
+		   			First(&model.Round{}).
+		   			Error
+		   		if err != nil {
+		   			return err
+		   		} */
 
 		var ids []int64
 		err = tx.
@@ -62,8 +63,8 @@ func (tr *Repository) CreateBulk(r *CreateRequest) ([]Turn, error) {
 
 		for i, id := range ids {
 			turns[i] = model.Turn{
-				PlayerID:  id,
-				RoundID:   r.RoundId,
+				PlayerID: id,
+				// RoundID:   r.RoundId,
 				StartedAt: r.StartedAt,
 				ClosedAt:  r.ClosedAt,
 			}
@@ -101,7 +102,7 @@ func (tr *Repository) FindById(id int64) (Turn, error) {
 	return fromModel(&turn), api.MakeServiceError(err)
 }
 
-func (tr *Repository) FindByRound(id int64) ([]Turn, error) {
+/* func (tr *Repository) FindByRound(id int64) ([]Turn, error) {
 	var turns []model.Turn
 
 	err := tr.db.
@@ -113,7 +114,7 @@ func (tr *Repository) FindByRound(id int64) ([]Turn, error) {
 		resp[i] = fromModel(&turn)
 	}
 	return resp, api.MakeServiceError(err)
-}
+} */
 
 func (tr *Repository) Delete(id int64) error {
 
@@ -136,19 +137,19 @@ func (ts *Repository) SaveFile(id int64, r io.Reader) error {
 		return fmt.Errorf("%w: body is empty", api.ErrInvalidParam)
 	}
 	err := ts.db.Transaction(func(tx *gorm.DB) error {
-		var (
-			err   error
-			round model.Round
-		)
+		/* 		var (
+		   			err   error
+		   			round model.Round
+		   		)
 
-		err = tx.
-			Joins("join turns on turns.round_id = rounds.id where turns.id  = ?", id).
-			First(&round).
-			Error
+		   		err = tx.
+		   			Joins("join turns on turns.round_id = rounds.id where turns.id  = ?", id).
+		   			First(&round).
+		   			Error
 
-		if err != nil {
-			return err
-		}
+		   		if err != nil {
+		   			return err
+		   		} */
 
 		dst, err := os.CreateTemp("", "")
 		if err != nil {
@@ -169,7 +170,7 @@ func (ts *Repository) SaveFile(id int64, r io.Reader) error {
 
 		fname := path.Join(ts.dataDir,
 			strconv.FormatInt(int64(year), 10),
-			strconv.FormatInt(round.GameID, 10),
+			// strconv.FormatInt(round.GameID, 10),
 			fmt.Sprintf("%d.zip", id),
 		)
 

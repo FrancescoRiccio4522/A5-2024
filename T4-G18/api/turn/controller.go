@@ -14,7 +14,7 @@ type Service interface {
 	FindById(id int64) (Turn, error)
 	Delete(id int64) error
 	Update(id int64, request *UpdateRequest) (Turn, error)
-	FindByRound(id int64) ([]Turn, error)
+	// rimossa funzione FindByRound(id int64) ([]Turn, error)
 	SaveFile(id int64, r io.Reader) error
 	GetFile(id int64) (string, *os.File, error)
 }
@@ -131,6 +131,7 @@ func (tc *Controller) Download(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+/* rimossa funzione list che cerca per round
 func (tc *Controller) List(w http.ResponseWriter, r *http.Request) error {
 	id, err := api.FromUrlQuery(r, "roundId", KeyType(10))
 
@@ -144,3 +145,4 @@ func (tc *Controller) List(w http.ResponseWriter, r *http.Request) error {
 
 	return api.WriteJson(w, http.StatusOK, turns)
 }
+*/

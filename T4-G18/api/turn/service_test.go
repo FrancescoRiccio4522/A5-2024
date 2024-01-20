@@ -41,7 +41,7 @@ func (suite *RepositorySuite) SetupSuite() {
 
 	err = db.AutoMigrate(
 		&model.Game{},
-		&model.Round{},
+		// &model.Round{},
 		&model.Player{},
 		&model.Turn{},
 		&model.Metadata{},
@@ -67,9 +67,9 @@ func (suite *RepositorySuite) Cleanup() {
 	if err := suite.db.Exec("TRUNCATE TABLE metadata RESTART IDENTITY CASCADE").Error; err != nil {
 		suite.T().Fatal(err)
 	}
-	if err := suite.db.Exec("TRUNCATE TABLE rounds RESTART IDENTITY CASCADE").Error; err != nil {
+	/* 	if err := suite.db.Exec("TRUNCATE TABLE rounds RESTART IDENTITY CASCADE").Error; err != nil {
 		suite.T().Fatal(err)
-	}
+	} */
 	if err := suite.db.Exec("TRUNCATE TABLE players RESTART IDENTITY CASCADE").Error; err != nil {
 		suite.T().Fatal(err)
 	}

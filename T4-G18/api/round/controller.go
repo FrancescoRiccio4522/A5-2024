@@ -1,4 +1,4 @@
-package round
+/* package round
 
 import (
 	"net/http"
@@ -105,4 +105,18 @@ func (rc *Controller) List(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	return api.WriteJson(w, http.StatusOK, rounds)
+}
+*/
+
+package round
+
+import "fmt"
+
+// FunzioneVuota è un esempio di una funzione che non accetta parametri e non restituisce valori
+func FunzioneVuota() {
+	fmt.Println("Questa è una funzione vuota!")
+}
+
+func main() {
+	FunzioneVuota() // Chiamata della funzione
 }

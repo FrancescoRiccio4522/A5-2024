@@ -8,16 +8,16 @@ import (
 )
 
 type Game struct {
-	ID           int64      `json:"id"`
-	CurrentRound int        `json:"currentRound"`
-	Description  string     `json:"description"`
-	Difficulty   string     `json:"difficulty"`
-	CreatedAt    time.Time  `json:"createdAt"`
-	UpdatedAt    time.Time  `json:"updatedAt"`
-	StartedAt    *time.Time `json:"startedAt"`
-	ClosedAt     *time.Time `json:"closedAt"`
-	Name         string     `json:"name"`
-	Players      []Player   `json:"players,omitempty"`
+	ID int64 `json:"id"`
+	// rimosso CurrentRound int        `json:"currentRound"`
+	Description string     `json:"description"`
+	Difficulty  string     `json:"difficulty"`
+	CreatedAt   time.Time  `json:"createdAt"`
+	UpdatedAt   time.Time  `json:"updatedAt"`
+	StartedAt   *time.Time `json:"startedAt"`
+	ClosedAt    *time.Time `json:"closedAt"`
+	Name        string     `json:"name"`
+	Players     []Player   `json:"players,omitempty"`
 }
 
 type Player struct {
@@ -39,11 +39,11 @@ func (CreateRequest) Validate() error {
 }
 
 type UpdateRequest struct {
-	CurrentRound int        `json:"currentRound"`
-	Name         string     `json:"name"`
-	Description  string     `json:"description"`
-	StartedAt    *time.Time `json:"startedAt,omitempty"`
-	ClosedAt     *time.Time `json:"closedAt,omitempty"`
+	// rimosso CurrentRound int        `json:"currentRound"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	StartedAt   *time.Time `json:"startedAt,omitempty"`
+	ClosedAt    *time.Time `json:"closedAt,omitempty"`
 }
 
 func (UpdateRequest) Validate() error {
@@ -83,16 +83,16 @@ func (a AccountIdType) AsString() string {
 }
 func fromModel(g *model.Game) Game {
 	return Game{
-		ID:           g.ID,
-		CurrentRound: g.CurrentRound,
-		Difficulty:   g.Difficulty,
-		Description:  g.Description.String,
-		CreatedAt:    g.CreatedAt,
-		UpdatedAt:    g.UpdatedAt,
-		Name:         g.Name,
-		StartedAt:    g.StartedAt,
-		ClosedAt:     g.ClosedAt,
-		Players:      parsePlayers(g.Players),
+		ID: g.ID,
+		// rimosso CurrentRound: g.CurrentRound,
+		Difficulty:  g.Difficulty,
+		Description: g.Description.String,
+		CreatedAt:   g.CreatedAt,
+		UpdatedAt:   g.UpdatedAt,
+		Name:        g.Name,
+		StartedAt:   g.StartedAt,
+		ClosedAt:    g.ClosedAt,
+		Players:     parsePlayers(g.Players),
 	}
 
 }

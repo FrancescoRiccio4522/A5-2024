@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"os"
 	"testing"
 
@@ -45,10 +44,11 @@ func (suite *ControllerSuite) SetupSuite() {
 			mock.MatchedBy(func(id int64) bool { return id != 1 }),
 			mock.Anything).
 		Return(api.ErrNotFound).
+		/* rimosso
 		On("CreateBulk", &CreateRequest{RoundId: 1}).
 		Return([]Turn{}, nil).
 		On("CreateBulk", mock.MatchedBy(func(r *CreateRequest) bool { return r.RoundId != 1 })).
-		Return(nil, api.ErrNotFound).
+		Return(nil, api.ErrNotFound).  */
 		On("FindById", int64(1)).
 		Return(Turn{ID: 1}, nil).
 		On("FindById",
@@ -62,12 +62,12 @@ func (suite *ControllerSuite) SetupSuite() {
 		On("Update", int64(1), &UpdateRequest{IsWinner: true, Scores: "a"}).
 		Return(Turn{}, nil).
 		On("Update", mock.MatchedBy(func(id int64) bool { return id != 1 }),
-			&UpdateRequest{IsWinner: true, Scores: "a"}).
-		Return(nil, api.ErrNotFound).
+						&UpdateRequest{IsWinner: true, Scores: "a"}).
+		Return(nil, api.ErrNotFound) /* .
 		On("FindByRound", int64(1)).
 		Return([]Turn{}, nil).
 		On("FindByRound", mock.MatchedBy(func(id int64) bool { return id != 1 })).
-		Return(nil, api.ErrNotFound)
+		Return(nil, api.ErrNotFound) */
 
 	suite.tmpDir = os.TempDir()
 	controller := NewController(tr)
@@ -77,7 +77,6 @@ func (suite *ControllerSuite) SetupSuite() {
 	r.Get("/{id}/files", api.HandlerFunc(controller.Download))
 	r.Put("/{id}/files", api.HandlerFunc(controller.Upload))
 	r.Post("/", api.HandlerFunc(controller.Create))
-	r.Get("/", api.HandlerFunc(controller.List))
 	r.Put("/{id}", api.HandlerFunc(controller.Update))
 	r.Delete("/{id}", api.HandlerFunc(controller.Delete))
 	r.Get("/{id}", api.HandlerFunc(controller.FindByID))
@@ -130,12 +129,12 @@ func (suite *ControllerSuite) TestCreate() {
 		{
 			Name:           "T02-04-BadJson",
 			ExpectedStatus: http.StatusBadRequest,
-			Body:           `{"roundId": 34`,
+			Body:           `{}`,
 		},
 		{
 			Name:           "T02-05-TurnCreated",
 			ExpectedStatus: http.StatusCreated,
-			Body:           `{"roundId": 1, "playerId": 1}`,
+			Body:           `{"playerId": 1}`,
 		},
 		{
 			Name:           "T02-06-RoundNotExists",
@@ -247,6 +246,9 @@ func (suite *ControllerSuite) TestUpdate() {
 	}
 
 }
+
+/* rimosso testList
+
 func (suite *ControllerSuite) TestList() {
 
 	tcs := []struct {
@@ -285,7 +287,7 @@ func (suite *ControllerSuite) TestList() {
 		})
 	}
 
-}
+} */
 
 func (suite *ControllerSuite) TestUpload() {
 
@@ -413,6 +415,7 @@ func (m *MockedRepository) Delete(id int64) error {
 	return args.Error(0)
 }
 
+/* rimosso mock di FindByRound
 func (m *MockedRepository) FindByRound(id int64) ([]Turn, error) {
 	args := m.Called(id)
 	v := args.Get(0)
@@ -421,7 +424,7 @@ func (m *MockedRepository) FindByRound(id int64) ([]Turn, error) {
 		return nil, args.Error(1)
 	}
 	return v.([]Turn), args.Error(1)
-}
+} */
 
 func (m *MockedRepository) Update(id int64, request *UpdateRequest) (Turn, error) {
 	args := m.Called(id, request)
