@@ -6,17 +6,17 @@ import (
 )
 
 type Game struct {
-	CurrentRound int   `gorm:"default:1"`
-	ID           int64 `gorm:"primaryKey;autoIncrement"`
-	Name         string
-	Description  sql.NullString `gorm:"default:null"`
-	Difficulty   string
-	CreatedAt    time.Time  `gorm:"autoCreateTime"`
-	UpdatedAt    time.Time  `gorm:"autoUpdateTime"`
-	StartedAt    *time.Time `gorm:"default:null"`
-	ClosedAt     *time.Time `gorm:"default:null"`
+	// rimosso CurrentRound int   `gorm:"default:1"`
+	ID          int64 `gorm:"primaryKey;autoIncrement"`
+	Name        string
+	Description sql.NullString `gorm:"default:null"`
+	Difficulty  string
+	CreatedAt   time.Time  `gorm:"autoCreateTime"`
+	UpdatedAt   time.Time  `gorm:"autoUpdateTime"`
+	StartedAt   *time.Time `gorm:"default:null"`
+	ClosedAt    *time.Time `gorm:"default:null"`
 	//Rounds       []Round    `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
-	Turns   []Turns  `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
+	Turns   []Turn   `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
 	Players []Player `gorm:"many2many:player_games;foreignKey:ID;joinForeignKey:GameID;References:AccountID;joinReferences:PlayerID"`
 }
 
@@ -41,15 +41,15 @@ type Player struct {
 	AccountID string    `gorm:"unique"`
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`
-	Turns     []Turn    `gorm:"foreignKey:PlayerID;constraint:OnDelete:SET NULL;"`
-	Games     []Game    `gorm:"many2many:player_games;foreignKey:AccountID;joinForeignKey:PlayerID;"`
+	// rimosso Turns     []Turn    `gorm:"foreignKey:PlayerID;constraint:OnDelete:SET NULL;"`
+	Games []Game `gorm:"many2many:player_games;foreignKey:AccountID;joinForeignKey:PlayerID;"`
 }
 
 func (Player) TableName() string {
 	return "players"
 }
 
-type Round struct {
+/* type Round struct {
 	ID          int64      `gorm:"primaryKey;autoIncrement"`
 	Order       int        `gorm:"not null;default:1"`
 	StartedAt   *time.Time `gorm:"default:null"`
@@ -59,12 +59,13 @@ type Round struct {
 	Turns       []Turn     `gorm:"foreignKey:RoundID;constraint:OnDelete:CASCADE;"`
 	TestClassId string     `gorm:"not null"`
 	GameID      int64      `gorm:"not null"`
-}
+} */
 
-func (Round) TableName() string {
-	return "rounds"
-}
-
+/*
+	 func (Round) TableName() string {
+		return "rounds"
+	}
+*/
 type Turn struct {
 	ID        int64      `gorm:"primaryKey;autoIncrement"`
 	CreatedAt time.Time  `gorm:"autoCreateTime"`

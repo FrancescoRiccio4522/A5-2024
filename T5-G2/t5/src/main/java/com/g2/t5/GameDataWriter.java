@@ -104,13 +104,13 @@ public class GameDataWriter {
 
             Integer game_id = responseObj.getInt("id"); // salvo il game id che l'Api mi restituisce
 
-            JSONObject round = new JSONObject();
+/*          rimosso   JSONObject round = new JSONObject();
             round.put("gameId", game_id);
             round.put("testClassId", game.getClasse());
-            round.put("startedAt", time);
-
-            httpPost = new HttpPost("http://t4-g18-app-1:3000/rounds");
-            jsonEntity = new StringEntity(round.toString(), ContentType.APPLICATION_JSON);
+            round.put("startedAt", time); */
+/* 
+           rimosso  httpPost = new HttpPost("http://t4-g18-app-1:3000/rounds");
+            jsonEntity = new StringEntity(round.toString(), ContentType.APPLICATION_JSON); 
 
             httpPost.setEntity(jsonEntity);
 
@@ -124,14 +124,15 @@ public class GameDataWriter {
 
             responseEntity = httpResponse.getEntity();
             responseBody = EntityUtils.toString(responseEntity);
-            responseObj = new JSONObject(responseBody);
+            responseObj = new JSONObject(responseBody); */
 
-            Integer round_id = responseObj.getInt("id"); // salvo il round id che l'Api mi restituisce
+           // rimosso  Integer round_id = responseObj.getInt("id"); // salvo il round id che l'Api mi restituisce
 
             JSONObject turn = new JSONObject();
 
             turn.put("players", playersArray);
-            turn.put("roundId", round_id);
+           // rimosso turn.put("roundId", round_id);
+           turn.put("gameId", game_id); // aggiunto
             turn.put("startedAt", time);
 
             httpPost = new HttpPost("http://t4-g18-app-1:3000/turns");
@@ -155,7 +156,7 @@ public class GameDataWriter {
 
             JSONObject resp = new JSONObject();
             resp.put("game_id", game_id);
-            resp.put("round_id", round_id);
+           // rimosso  resp.put("round_id", round_id);
             resp.put("turn_id", turn_id);
 
             return resp;

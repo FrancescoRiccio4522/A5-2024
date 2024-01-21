@@ -254,8 +254,9 @@ public class MyController {
                 System.out.println("Errore in put turn");
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
             // chiusura round
-            httpPut = new HttpPut("http://t4-g18-app-1:3000/rounds/" + String.valueOf(request.getParameter("roundId")));
+           /* rimosso httpPut = new HttpPut("http://t4-g18-app-1:3000/rounds/" + String.valueOf(request.getParameter("roundId")));
 
             obj = new JSONObject();
 
@@ -272,7 +273,8 @@ public class MyController {
             if (statusCode > 299) {
                 System.out.println("Errore in put round");
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            } */
+
             // chiusura gioco
             httpPut = new HttpPut("http://t4-g18-app-1:3000/games/" + String.valueOf(request.getParameter("gameId")));
 
