@@ -15,6 +15,7 @@ type Service interface {
 	Delete(id int64) error
 	Update(id int64, request *UpdateRequest) (Turn, error)
 	// rimossa funzione FindByRound(id int64) ([]Turn, error)
+	FindByGame(id int64) ([]Turn, error) // aggiunta, è la vecchia findByRound
 	SaveFile(id int64, r io.Reader) error
 	GetFile(id int64) (string, *os.File, error)
 }
@@ -131,6 +132,22 @@ func (tc *Controller) Download(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+// aggiunta funzione list che cerca per game
+func (tc *Controller) List(w http.ResponseWriter, r *http.Request) error {
+	id, err := api.FromUrlQuery(r, "gameId", KeyType(10))
+
+	if err != nil {
+		return err
+	}
+
+	turns, err := tc.service.FindByGame(id.AsInt64())
+	if err != nil {
+		return api.MakeHttpError(err)
+	}
+
+	return api.WriteJson(w, http.StatusOK, turns)
+}
+
 /* rimossa funzione list che cerca per round
 func (tc *Controller) List(w http.ResponseWriter, r *http.Request) error {
 	id, err := api.FromUrlQuery(r, "roundId", KeyType(10))
@@ -138,6 +155,7 @@ func (tc *Controller) List(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
+
 	turns, err := tc.service.FindByRound(id.AsInt64())
 	if err != nil {
 		return api.MakeHttpError(err)

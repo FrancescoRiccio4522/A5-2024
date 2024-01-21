@@ -17,9 +17,12 @@ type Turn struct {
 	Scores    string     `json:"scores"`
 	StartedAt *time.Time `json:"startedAt"`
 	ClosedAt  *time.Time `json:"closedAt"`
+	GameID    int64      `json:"gameId"` // aggiunto
 }
+
 type CreateRequest struct {
 	// rimosso RoundId   int64      `json:"roundId"`
+	GameID    int64      `json:"gameId"` // aggiunto
 	Players   []string   `json:"players"`
 	StartedAt *time.Time `json:"startedAt,omitempty"`
 	ClosedAt  *time.Time `json:"closedAt,omitempty"`
@@ -62,5 +65,6 @@ func fromModel(t *model.Turn) Turn {
 		StartedAt: t.StartedAt,
 		ClosedAt:  t.ClosedAt,
 		// rimosso RoundID:   t.RoundID,
+		GameID: t.GameID, // aggiunto
 	}
 }
