@@ -14,10 +14,10 @@ type Turn struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 	PlayerID  int64     `json:"playerId"`
 	// rimosso RoundID   int64      `json:"roundId"`
+	GameID    int64      `json:"gameId"` // aggiunto
 	Scores    string     `json:"scores"`
 	StartedAt *time.Time `json:"startedAt"`
 	ClosedAt  *time.Time `json:"closedAt"`
-	GameID    int64      `json:"gameId"` // aggiunto
 }
 
 type CreateRequest struct {

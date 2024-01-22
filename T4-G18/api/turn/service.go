@@ -164,9 +164,85 @@ func (ts *Repository) SaveFile(id int64, r io.Reader) error {
 	}
 
 	err := ts.db.Transaction(func(tx *gorm.DB) error {
+
+		var (
+			err  error
+			game model.Game
+		)
+
+		err = tx.
+			Joins("join turns on turns.game_id = game.id where turns.id  = ?", id).
+			First(&game).
+			Error
+
+		if err != nil {
+			return err
+		}
+
+		// Crea un file temporaneo per salvare i dati
+		dst, err := os.CreateTemp("", "")
+		if err != nil {
+			return err
+		}
+
+		defer os.Remove(dst.Name())
+
+		// Copia i dati nel file temporaneo
+		if _, err := io.Copy(dst, r); err != nil {
+			return err
+		}
+
+		// Verifica che il file sia un archivio zip
+		if zfile, err := zip.OpenReader(dst.Name()); err != nil {
+			return api.ErrNotAZip
+		} else {
+			zfile.Close()
+		}
+
+		year := time.Now().Year()
+
+		// Definisce il percorso del file finale
+		fname := path.Join(ts.dataDir,
+			strconv.FormatInt(int64(year), 10),
+			strconv.FormatInt(game.ID, 10),
+			fmt.Sprintf("%d.zip", id),
+		)
+
+		// Crea la directory se non esiste
+		dir := path.Dir(fname)
+		if err := os.MkdirAll(dir, os.ModePerm); err != nil && !errors.Is(err, os.ErrExist) {
+			return err
+		}
+
+		// Rinomina il file temporaneo nel percorso finale
+		if err := os.Rename(dst.Name(), fname); err != nil {
+			return err
+		}
+
+		// Crea o aggiorna i metadati per il turno
+		return tx.FirstOrCreate(
+			&model.Metadata{
+				TurnID: sql.NullInt64{Int64: id, Valid: true},
+				Path:   fname,
+			}).
+			Error
+
+	})
+
+	return api.MakeServiceError(err)
+
+}
+
+/* altra implementazione
+func (ts *Repository) SaveFile(id int64, r io.Reader) error {
+	if r == nil {
+		return fmt.Errorf("%w: body is empty", api.ErrInvalidParam)
+	}
+
+	err := ts.db.Transaction(func(tx *gorm.DB) error {
 		var turn model.Turn // aggiunto
 
-		/* rimosso codice associato a round
+		 rimosso codice associato a round
 				var (
 		   			err   error
 		   			round model.Round
@@ -179,7 +255,7 @@ func (ts *Repository) SaveFile(id int64, r io.Reader) error {
 
 		   		if err != nil {
 		   			return err
-		   		} */
+		   		}
 
 		// aggiunto Recupera il turno per ottenere l'ID del game associato
 		err := tx.Where("id = ?", id).First(&turn).Error
@@ -216,12 +292,12 @@ func (ts *Repository) SaveFile(id int64, r io.Reader) error {
 			fmt.Sprintf("%d.zip", id),
 		)
 
-		/* 		rimosso codice riguardante round
+		 		rimosso codice riguardante round
 		   		fname := path.Join(ts.dataDir,
 		   			strconv.FormatInt(int64(year), 10),
 		   			/strconv.FormatInt(round.GameID, 10),
 		   			fmt.Sprintf("%d.zip", id),
-		   		) */
+		   		)
 
 		// Crea la directory se non esiste
 		dir := path.Dir(fname)
@@ -246,7 +322,7 @@ func (ts *Repository) SaveFile(id int64, r io.Reader) error {
 
 	return api.MakeServiceError(err)
 
-}
+} */
 
 func (ts *Repository) GetFile(id int64) (string, *os.File, error) {
 	var (
