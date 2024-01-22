@@ -131,8 +131,8 @@ public class GameDataWriter {
             JSONObject turn = new JSONObject();
 
             turn.put("players", playersArray);
-           // rimosso turn.put("roundId", round_id);
-           turn.put("gameId", game_id); // aggiunto
+            // rimosso turn.put("roundId", round_id);
+            turn.put("gameId", game_id); // aggiunto
             turn.put("startedAt", time);
 
             httpPost = new HttpPost("http://t4-g18-app-1:3000/turns");
@@ -156,7 +156,7 @@ public class GameDataWriter {
 
             JSONObject resp = new JSONObject();
             resp.put("game_id", game_id);
-           // rimosso  resp.put("round_id", round_id);
+            // rimosso  resp.put("round_id", round_id);
             resp.put("turn_id", turn_id);
 
             return resp;

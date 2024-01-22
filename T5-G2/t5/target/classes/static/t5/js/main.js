@@ -158,7 +158,9 @@ function redirectToPageeditor() {
       // Gestisci la risposta del server qui
       localStorage.setItem("gameId", response.game_id);
       localStorage.setItem("turnId", response.turn_id);
-      localStorage.setItem("roundId", response.round_id);
+     
+    // rimosso ma non so se è giusto 
+    // localStorage.setItem("roundId", response.round_id);
       window.location.href = "/editor";
     },
     dataType: "json",

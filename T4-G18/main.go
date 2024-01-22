@@ -96,7 +96,7 @@ func run(ctx context.Context, c Configuration) error {
 	err = db.AutoMigrate(
 		&model.Game{},
 		&model.Player{},
-		//rimosso model.round
+		// rimosso model.round
 		&model.Turn{},
 		&model.Metadata{},
 		&model.PlayerGame{},
@@ -336,7 +336,9 @@ func setupRoutes(gc *game.Controller, tc *turn.Controller, roc *robot.Controller
 		r.Get("/{id}", api.HandlerFunc(tc.FindByID))
 
 		// List turn
-		// rimosso funzione list r.Get("/", api.HandlerFunc(tc.List))
+		// rimosso funzione list
+		// riaggiunta perchè modificata
+		r.Get("/", api.HandlerFunc(tc.List))
 
 		// Create turn
 		r.With(middleware.AllowContentType("application/json")).

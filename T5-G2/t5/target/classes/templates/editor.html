@@ -537,7 +537,9 @@ public class NomeClasseTest {
       $(document).ready(function() {
         var idUtente = parseJwt(getCookie("jwt")).userId;
         var idPartita = localStorage.getItem("gameId");
-        var idTurno = localStorage.getItem("roundId");
+        // per il momento non so cos'è io gli passerei gameId
+        var idTurno = localStorage.getItem("gameId");
+        // var idTurno = localStorage.getItem("roundId");
         var nameCUT= localStorage.getItem("classe");
         var robotScelto = localStorage.getItem("robot");
         var difficolta = "easy";
@@ -664,7 +666,7 @@ public class NomeClasseTest {
             formData.append("underTestClassCode", sidebarEditor.getValue());
 
             formData.append("turnId",localStorage.getItem("turnId"));
-            formData.append("roundId",localStorage.getItem("roundId"));
+            // rimosso formData.append("roundId",localStorage.getItem("roundId"));
             formData.append("gameId",localStorage.getItem("gameId"));
             formData.append("testClassId", localStorage.getItem("classe"));
             formData.append("difficulty", localStorage.getItem("difficulty"));
@@ -1066,7 +1068,9 @@ public class NomeClasseTest {
       modal2Content.appendChild(idPartitaElement);
 
       var idTurnoElement = document.createElement("p");
-      var turnoIDj = localStorage.getItem("roundId");
+      // anche qui gameId
+      var turnoIDj = localStorage.getItem("gameId");
+      // var turnoIDj = localStorage.getItem("roundId");
       idTurnoElement.textContent = "Turno: " + turnoIDj;
       modal2Content.appendChild(idTurnoElement);
 

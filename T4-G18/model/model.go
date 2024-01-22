@@ -41,15 +41,16 @@ type Player struct {
 	AccountID string    `gorm:"unique"`
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`
-	// rimosso Turns     []Turn    `gorm:"foreignKey:PlayerID;constraint:OnDelete:SET NULL;"`
-	Games []Game `gorm:"many2many:player_games;foreignKey:AccountID;joinForeignKey:PlayerID;"`
+	Turns     []Turn    `gorm:"foreignKey:PlayerID;constraint:OnDelete:SET NULL;"`
+	Games     []Game    `gorm:"many2many:player_games;foreignKey:AccountID;joinForeignKey:PlayerID;"`
 }
 
 func (Player) TableName() string {
 	return "players"
 }
 
-/* type Round struct {
+/* rimosso
+	type Round struct {
 	ID          int64      `gorm:"primaryKey;autoIncrement"`
 	Order       int        `gorm:"not null;default:1"`
 	StartedAt   *time.Time `gorm:"default:null"`
@@ -66,6 +67,7 @@ func (Player) TableName() string {
 		return "rounds"
 	}
 */
+
 type Turn struct {
 	ID        int64      `gorm:"primaryKey;autoIncrement"`
 	CreatedAt time.Time  `gorm:"autoCreateTime"`
@@ -76,7 +78,7 @@ type Turn struct {
 	Scores    string     `gorm:"default:null"`
 	IsWinner  bool       `gorm:"default:false"`
 	PlayerID  int64      `gorm:"index:idx_playerturn,unique;not null"`
-	//RoundID   int64      `gorm:"index:idx_playerturn,unique;not null"`
+	// rimosso RoundID   int64      `gorm:"index:idx_playerturn,unique;not null"`
 	GameID int64 `gorm:"not null"`
 }
 
