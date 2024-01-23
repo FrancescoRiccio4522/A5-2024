@@ -537,9 +537,9 @@ public class NomeClasseTest {
       $(document).ready(function() {
         var idUtente = parseJwt(getCookie("jwt")).userId;
         var idPartita = localStorage.getItem("gameId");
-        // stesse modifiche dell'altro file 
-        var idTurno = localStorage.getItem("gameId");
-        //var idTurno = localStorage.getItem("roundId");
+        // getItem(turnId) non so se è corretto
+        var idTurno = localStorage.getItem("turnId");
+        // rimosso var idTurno = localStorage.getItem("roundId");
         var nameCUT= localStorage.getItem("classe");
         var robotScelto = localStorage.getItem("robot");
         var difficolta = "easy";
@@ -1068,9 +1068,9 @@ public class NomeClasseTest {
       modal2Content.appendChild(idPartitaElement);
 
       var idTurnoElement = document.createElement("p");
-      // stesse modifiche altro file
-      var turnoIDj = localStorage.getItem("gameId");
-      //var turnoIDj = localStorage.getItem("roundId");
+      // getItem(turnId) potrebbe non essere corretto 
+      var turnoIDj = localStorage.getItem("turnId");
+      // rimosso var turnoIDj = localStorage.getItem("roundId");
       idTurnoElement.textContent = "Turno: " + turnoIDj;
       modal2Content.appendChild(idTurnoElement);
 

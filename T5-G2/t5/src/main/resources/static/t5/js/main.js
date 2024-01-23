@@ -2,6 +2,7 @@
 var classe = null;
 var robot = null;
 var difficulty = null;
+
 //variabili per il login
 var user = null;
 var password = null;

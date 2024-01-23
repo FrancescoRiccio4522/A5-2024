@@ -537,8 +537,8 @@ public class NomeClasseTest {
       $(document).ready(function() {
         var idUtente = parseJwt(getCookie("jwt")).userId;
         var idPartita = localStorage.getItem("gameId");
-        // per il momento non so cos'è io gli passerei gameId
-        var idTurno = localStorage.getItem("gameId");
+        // passo turnId ma non so se e corretto
+        var idTurno = localStorage.getItem("turnId");
         // var idTurno = localStorage.getItem("roundId");
         var nameCUT= localStorage.getItem("classe");
         var robotScelto = localStorage.getItem("robot");
@@ -1068,9 +1068,9 @@ public class NomeClasseTest {
       modal2Content.appendChild(idPartitaElement);
 
       var idTurnoElement = document.createElement("p");
-      // anche qui gameId
-      var turnoIDj = localStorage.getItem("gameId");
-      // var turnoIDj = localStorage.getItem("roundId");
+      // anche qui non so se è corretto
+      var turnoIDj = localStorage.getItem("turnId");
+      // rimosso var turnoIDj = localStorage.getItem("roundId");
       idTurnoElement.textContent = "Turno: " + turnoIDj;
       modal2Content.appendChild(idTurnoElement);
 
