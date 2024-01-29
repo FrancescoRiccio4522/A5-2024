@@ -18,6 +18,7 @@ type Game struct {
 	ClosedAt     *time.Time `json:"closedAt"`
 	Name         string     `json:"name"`
 	Players      []Player   `json:"players,omitempty"`
+	Duration	 time.Duration `json:"duration"` // aggiunto
 }
 
 type Player struct {
@@ -93,6 +94,7 @@ func fromModel(g *model.Game) Game {
 		StartedAt:    g.StartedAt,
 		ClosedAt:     g.ClosedAt,
 		Players:      parsePlayers(g.Players),
+		Duration:	  g.Duration, // aggiunto
 	}
 
 }

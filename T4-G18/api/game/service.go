@@ -104,6 +104,41 @@ func (gs *Repository) Delete(id int64) error {
 	return nil
 }
 
+// aggiunto: funzione nuova di Update con Duration
+func (gs *Repository) Update(id int64, r *UpdateRequest) (Game, error) {
+	var (
+	game model.Game = model.Game{ID: id}
+	err  error
+	)
+	
+	// Aggiorna il gioco con i nuovi valori
+	err = gs.db.Model(&game).Updates(r).Error
+	if err != nil {
+		return Game{}, api.MakeServiceError(err)
+	}
+	
+	// Ricarica il gioco per ottenere i dati aggiornati, inclusi StartedAt e ClosedAt
+	err = gs.db.First(&game, id).Error
+	if err != nil {
+		return Game{}, api.MakeServiceError(err)
+	}
+ 
+	// Controlla se IsWinner è true e se sia StartedAt che ClosedAt sono non nulli
+	if game.StartedAt != nil && game.ClosedAt != nil {
+		duration := game.ClosedAt.Sub(*game.StartedAt)
+		game.Duration = duration
+	
+		// Aggiorna nuovamente il gioco con la durata calcolata
+		err = gs.db.Model(&game).Update("Duration", duration).Error
+		if err != nil {
+			return Game{}, api.MakeServiceError(err)
+		}
+	}
+	
+	return fromModel(&game), api.MakeServiceError(err)
+	}
+
+/* funzione vecchia di Update senza Duration
 func (gs *Repository) Update(id int64, r *UpdateRequest) (Game, error) {
 
 	var (
@@ -117,4 +152,4 @@ func (gs *Repository) Update(id int64, r *UpdateRequest) (Game, error) {
 	}
 
 	return fromModel(&game), api.MakeServiceError(err)
-}
+} */

@@ -66,14 +66,16 @@ public final class Range<T> implements Serializable {
 	 * @param comparator the comparator to be used, null for natural ordering
 	 * @return the range object, not null
 	 * @throws IllegalArgumentException if the element is null
-	 * @throws ClassCastException       if using natural ordering and the elements are not Comparable
+	 * @throws ClassCastException       if using natural ordering and the elements
+	 *                                  are not Comparable
 	 */
 	public static <T> Range<T> is(final T element, final Comparator<T> comparator) {
 		return between(element, element, comparator);
 	}
 
 	/**
-	 * Obtains a range with the specified minimum and maximum values (both inclusive).
+	 * Obtains a range with the specified minimum and maximum values (both
+	 * inclusive).
 	 *
 	 * The range uses the natural ordering of the elements to determine where
 	 * values lie in the range.
@@ -82,8 +84,10 @@ public final class Range<T> implements Serializable {
 	 * The getMinimum and getMaximum methods will return the correct values.
 	 *
 	 * @param <T>           the type of the elements in this range
-	 * @param fromInclusive the first value that defines the edge of the range, inclusive
-	 * @param toInclusive   the second value that defines the edge of the range, inclusive
+	 * @param fromInclusive the first value that defines the edge of the range,
+	 *                      inclusive
+	 * @param toInclusive   the second value that defines the edge of the range,
+	 *                      inclusive
 	 * @return the range object, not null
 	 * @throws IllegalArgumentException if either element is null
 	 * @throws ClassCastException       if the elements are not Comparable
@@ -93,7 +97,8 @@ public final class Range<T> implements Serializable {
 	}
 
 	/**
-	 * Obtains a range with the specified minimum and maximum values (both inclusive).
+	 * Obtains a range with the specified minimum and maximum values (both
+	 * inclusive).
 	 *
 	 * The range uses the specified Comparator to determine where
 	 * values lie in the range.
@@ -102,12 +107,15 @@ public final class Range<T> implements Serializable {
 	 * The getMinimum and getMaximum methods will return the correct values.
 	 *
 	 * @param <T>           the type of the elements in this range
-	 * @param fromInclusive the first value that defines the edge of the range, inclusive
-	 * @param toInclusive   the second value that defines the edge of the range, inclusive
+	 * @param fromInclusive the first value that defines the edge of the range,
+	 *                      inclusive
+	 * @param toInclusive   the second value that defines the edge of the range,
+	 *                      inclusive
 	 * @param comparator    the comparator to be used, null for natural ordering
 	 * @return the range object, not null
 	 * @throws IllegalArgumentException if either element is null
-	 * @throws ClassCastException       if using natural ordering and the elements are not Comparable
+	 * @throws ClassCastException       if using natural ordering and the elements
+	 *                                  are not Comparable
 	 */
 	public static <T> Range<T> between(final T fromInclusive, final T toInclusive, final Comparator<T> comparator) {
 		return new Range<T>(fromInclusive, toInclusive, comparator);
@@ -141,7 +149,7 @@ public final class Range<T> implements Serializable {
 	}
 
 	// Accessors
-	//--------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Gets the minimum value in this range.
@@ -186,7 +194,7 @@ public final class Range<T> implements Serializable {
 	}
 
 	// Element tests
-	//--------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Checks whether the specified element occurs within this range.
@@ -278,12 +286,13 @@ public final class Range<T> implements Serializable {
 	}
 
 	// Range tests
-	//--------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Checks whether this range contains all the elements of the specified range.
 	 *
-	 * This method may fail if the ranges have two different comparators or element types.
+	 * This method may fail if the ranges have two different comparators or element
+	 * types.
 	 *
 	 * @param otherRange the range to check, null returns false
 	 * @return true if this range contains the specified range
@@ -300,7 +309,8 @@ public final class Range<T> implements Serializable {
 	/**
 	 * Checks whether this range is completely after the specified range.
 	 *
-	 * This method may fail if the ranges have two different comparators or element types.
+	 * This method may fail if the ranges have two different comparators or element
+	 * types.
 	 *
 	 * @param otherRange the range to check, null returns false
 	 * @return true if this range is completely after the specified range
@@ -318,11 +328,12 @@ public final class Range<T> implements Serializable {
 	 *
 	 * Two ranges overlap if there is at least one element in common.
 	 *
-	 * This method may fail if the ranges have two different comparators or element types.
+	 * This method may fail if the ranges have two different comparators or element
+	 * types.
 	 *
 	 * @param otherRange the range to test, null returns false
 	 * @return true if the specified range overlaps with this
-	 * range; otherwise, {@code false}
+	 *         range; otherwise, {@code false}
 	 * @throws RuntimeException if ranges cannot be compared
 	 */
 	public boolean isOverlappedBy(final Range<T> otherRange) {
@@ -337,7 +348,8 @@ public final class Range<T> implements Serializable {
 	/**
 	 * Checks whether this range is completely before the specified range.
 	 *
-	 * This method may fail if the ranges have two different comparators or element types.
+	 * This method may fail if the ranges have two different comparators or element
+	 * types.
 	 *
 	 * @param otherRange the range to check, null returns false
 	 * @return true if this range is completely before the specified range
@@ -371,7 +383,7 @@ public final class Range<T> implements Serializable {
 	}
 
 	// Basics
-	//--------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Compares this range to another object to test if they are equal..
@@ -390,8 +402,7 @@ public final class Range<T> implements Serializable {
 			return false;
 		} else {
 			@SuppressWarnings("unchecked") // OK because we checked the class above
-			final
-			Range<T> range = (Range<T>) obj;
+			final Range<T> range = (Range<T>) obj;
 			return minimum.equals(range.minimum) &&
 					maximum.equals(range.maximum);
 		}
@@ -441,21 +452,23 @@ public final class Range<T> implements Serializable {
 	/**
 	 * Formats the receiver using the given format.
 	 *
-	 * This uses java.util.Formattable to perform the formatting. Three variables may
+	 * This uses java.util.Formattable to perform the formatting. Three variables
+	 * may
 	 * be used to embed the minimum, maximum and comparator.
 	 * Use %1$s for the minimum element, %2$s for the maximum element
 	 * and %3$s for the comparator.
 	 * The default format used by toString() is [%1$s..%2$s].
 	 *
-	 * @param format the format string, optionally containing %1$s, %2$s and %3$s, not null
+	 * @param format the format string, optionally containing %1$s, %2$s and %3$s,
+	 *               not null
 	 * @return the formatted string, not null
 	 */
 	public String toString(final String format) {
 		return String.format(format, minimum, maximum, comparator);
 	}
 
-	//-----------------------------------------------------------------------
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	// -----------------------------------------------------------------------
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public enum ComparableComparator implements Comparator {
 		INSTANCE;
 

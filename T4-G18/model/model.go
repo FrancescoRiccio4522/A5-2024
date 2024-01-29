@@ -17,6 +17,7 @@ type Game struct {
 	ClosedAt     *time.Time `gorm:"default:null"`
 	Rounds       []Round    `gorm:"foreignKey:GameID;constraint:OnDelete:CASCADE;"`
 	Players      []Player   `gorm:"many2many:player_games;foreignKey:ID;joinForeignKey:GameID;References:AccountID;joinReferences:PlayerID"`
+	Duration	 time.Duration `gorm:"default:null"` // aggiunto
 }
 
 func (Game) TableName() string {

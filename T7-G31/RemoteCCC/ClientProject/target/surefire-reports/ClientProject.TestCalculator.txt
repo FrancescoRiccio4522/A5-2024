@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: ClientProject.TestCalculator
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.13 s <<< FAILURE! - in ClientProject.TestCalculator
+testFindMax(ClientProject.TestCalculator)  Time elapsed: 0.026 s  <<< FAILURE!
+java.lang.AssertionError: expected:<-1> but was:<0>
+	at ClientProject.TestCalculator.testFindMax(TestCalculator.java:2)
+
