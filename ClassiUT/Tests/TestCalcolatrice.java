@@ -1,26 +1,28 @@
-import org.junit.Before;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TestCalcolatrice {
-    private static Calcolatrice cut;
+public class NomeClasseTest {
+	private static Calcolatrice cut;
 
-    @BeforeClass
-    public static void setup() {
-        cut = new Calcolatrice();
-    }
+	@BeforeAll
+	static public void setup() {
+		cut = new Calcolatrice();
+	}
 
-    @Test
-    public void testDivide() {
-        int result = cut.divide(10, 2);
-        assertEquals(5, result);
-    }
+	@Test
+	public void testDivide() {
+		int result = cut.divide(10, 2);
+		assertEquals(5, result);
+	}
 
-    @Test(expected = ArithmeticException.class)
-    public void testDivideByZero() {
-        cut.divide(10, 0);
-    }
+	@Test
+	public void testDivideByZero() {
+		assertThrows(ArithmeticException.class, () -> {
+			cut.divide(10, 0);
+		});
+	}
 }

@@ -1,6 +1,9 @@
 package game
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/alarmfox/game-repository/api"
 	"github.com/alarmfox/game-repository/model"
 	"gorm.io/gorm"
@@ -22,6 +25,9 @@ func (gs *Repository) Create(r *CreateRequest) (Game, error) {
 			Name:      r.Name,
 			StartedAt: r.StartedAt,
 			ClosedAt:  r.ClosedAt,
+			Class:     r.Class, // aggiunto
+			Robot:     r.Robot,// aggiunto
+			Difficulty: r.Difficulty, // aggiunto
 			Players:   make([]model.Player, len(r.Players)),
 		}
 	)
@@ -104,41 +110,7 @@ func (gs *Repository) Delete(id int64) error {
 	return nil
 }
 
-// aggiunto: funzione nuova di Update con Duration
-func (gs *Repository) Update(id int64, r *UpdateRequest) (Game, error) {
-	var (
-	game model.Game = model.Game{ID: id}
-	err  error
-	)
-	
-	// Aggiorna il gioco con i nuovi valori
-	err = gs.db.Model(&game).Updates(r).Error
-	if err != nil {
-		return Game{}, api.MakeServiceError(err)
-	}
-	
-	// Ricarica il gioco per ottenere i dati aggiornati, inclusi StartedAt e ClosedAt
-	err = gs.db.First(&game, id).Error
-	if err != nil {
-		return Game{}, api.MakeServiceError(err)
-	}
- 
-	// Controlla se IsWinner è true e se sia StartedAt che ClosedAt sono non nulli
-	if game.StartedAt != nil && game.ClosedAt != nil {
-		duration := game.ClosedAt.Sub(*game.StartedAt)
-		game.Duration = duration
-	
-		// Aggiorna nuovamente il gioco con la durata calcolata
-		err = gs.db.Model(&game).Update("Duration", duration).Error
-		if err != nil {
-			return Game{}, api.MakeServiceError(err)
-		}
-	}
-	
-	return fromModel(&game), api.MakeServiceError(err)
-	}
-
-/* funzione vecchia di Update senza Duration
+// funzione modificata
 func (gs *Repository) Update(id int64, r *UpdateRequest) (Game, error) {
 
 	var (
@@ -146,10 +118,80 @@ func (gs *Repository) Update(id int64, r *UpdateRequest) (Game, error) {
 		err  error
 	)
 
+	// Aggiorna il gioco con i nuovi valori
 	err = gs.db.Model(&game).Updates(r).Error
 	if err != nil {
 		return Game{}, api.MakeServiceError(err)
 	}
 
+	// Ricarica il gioco per ottenere i dati aggiornati, inclusi StartedAt e ClosedAt
+	err = gs.db.First(&game, id).Error
+	if err != nil {
+		return Game{}, api.MakeServiceError(err)
+	}
+
+	// Controlla se StartedAt che ClosedAt sono non nulli
+	if game.StartedAt != nil && game.ClosedAt != nil {
+		duration := game.ClosedAt.Sub(*game.StartedAt)
+		durationToAddPlayer := game.ClosedAt.Sub(*game.StartedAt)
+		// Calcola ore, minuti, secondi
+		hours := duration / time.Hour
+		duration -= hours * time.Hour
+		minutes := duration / time.Minute
+		duration -= minutes * time.Minute
+		seconds := duration / time.Second
+
+		// Crea una stringa nel formato HH:MM:SS
+		durationStr := fmt.Sprintf("%02d:%02d:%02d", hours, minutes, seconds)
+
+		game.Duration = durationStr
+
+		// Aggiorna nuovamente il gioco con la durata calcolata
+		err = gs.db.Model(&game).Update("Duration", durationStr).Error
+		if err != nil {
+			return Game{}, api.MakeServiceError(err)
+		}
+
+		// Trova il Round associato al Game
+		var round model.Round
+		err := gs.db.Where("game_id = ?", id).First(&round).Error
+		if err != nil {
+			fmt.Println("Errore nella ricerca del Round:", err)
+		}
+
+		// Trova il Turn associato al Round
+		var turn model.Turn
+		err = gs.db.Where("round_id = ?", round.ID).First(&turn).Error
+		if err != nil {
+			fmt.Println("Errore nella ricerca del Turn:", err)
+		}
+
+		// Trova il Player associato al Turn
+		var player model.Player
+		err = gs.db.First(&player, turn.PlayerID).Error
+		if err != nil {
+			fmt.Println("Errore nella ricerca del Player:", err)
+		}
+
+		// Aggiorna TotalTimePlayed per il Player
+		player.TotalTimePlayed += durationToAddPlayer
+		err = gs.db.Model(&player).Update("TotalTimePlayed", player.TotalTimePlayed).Error
+		if err != nil {
+			fmt.Println("Errore nell'aggiornamento di TotalTimePlayed:", err)
+		}
+
+		// Crea un oggetto PlayerGame con le chiavi primarie impostates
+		playerGame := model.PlayerGame{
+			PlayerID: turn.PlayerID,
+			GameID:   id,
+		}
+
+		// Aggiorna il campo IsWinner a true per l'oggetto specificato
+		err = gs.db.Model(&playerGame).Update("IsWinner", true).Error
+		if err != nil {
+			fmt.Println("Errore nell'aggiornamento di IsWinner in PlayerGame:", err)
+		}
+	}
+
 	return fromModel(&game), api.MakeServiceError(err)
-} */
+}

@@ -1,19 +1,11 @@
-version: '2'
+version: '3.12.12'
 
 services:
-  t8_generazione:
-    build: ./
-    ports:
-      - 3080:3080
+  app:
+    build: .
     networks:
       - global-network
-    volumes:
-      - VolumeT8:/VolumeT8
 
 networks:
   global-network:
-    external: true
-
-volumes:
-  VolumeT8:
     external: true
